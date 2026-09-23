@@ -1,0 +1,693 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Training Point</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Diseño comprometido con la identidad del cliente: fondo oscuro, pin azul, texto blanco.
+   Todos los colores se declaran explícitamente, no hay dependencia del tema del visor. */
+:root{
+  --void:#090C11; --panel:#111823; --panel-2:#18202C; --panel-3:#1F2937;
+  --line:#26313F; --line-2:#334156;
+  --ink:#F0F4F9; --ink-2:#AEBCCB; --muted:#6D7D91;
+  --blue:#2F7BF0; --blue-hi:#5C9BFF; --blue-lo:#10243F; --blue-glow:rgba(47,123,240,.28);
+  --amber:#E9A44C; --amber-lo:#2B2113;
+  --green:#37B58F; --green-lo:#0F2A24;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--void); color:var(--ink);
+  font-family:"Barlow","Helvetica Neue",Arial,sans-serif; font-size:16.5px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.shell{max-width:1180px; margin:0 auto; padding:0 22px;}
+section{padding:76px 0;}
+@media (max-width:700px){ section{padding:52px 0;} .shell{padding:0 16px;} }
+
+.klabel{
+  font-family:"Barlow Condensed",sans-serif; font-size:14px; font-weight:700; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--blue-hi); margin:0 0 12px;
+}
+h2.big{
+  font-family:"Archivo",sans-serif; font-weight:800; letter-spacing:-.032em; line-height:1.02;
+  font-size:clamp(31px,4.6vw,50px); margin:0 0 16px; text-wrap:balance;
+}
+.slead{color:var(--ink-2); font-size:18px; max-width:60ch; margin:0 0 34px;}
+
+/* ---------------- NAV ---------------- */
+nav.top{
+  position:sticky; top:0; z-index:60; background:rgba(9,12,17,.86);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+}
+nav.top .in{max-width:1180px; margin:0 auto; padding:13px 22px; display:flex; align-items:center; gap:18px;}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; margin-right:auto;}
+.pin{width:26px; height:26px; flex:none;}
+.brand .bn{font-family:"Archivo",sans-serif; font-weight:800; font-size:18px; color:var(--ink); letter-spacing:-.02em;}
+nav.top a.nl{
+  color:var(--ink-2); text-decoration:none; font-size:14.5px; font-weight:500;
+  font-family:"Barlow Condensed",sans-serif; font-size:16px; letter-spacing:.05em; text-transform:uppercase;
+}
+nav.top a.nl:hover{color:var(--ink);}
+nav.top a.nl:focus-visible, nav.top .brand:focus-visible{outline:2px solid var(--blue); outline-offset:3px; border-radius:4px;}
+@media (max-width:780px){ nav.top a.nl{display:none;} }
+.btn{
+  display:inline-flex; align-items:center; gap:8px; text-decoration:none; cursor:pointer;
+  font-family:"Barlow Condensed",sans-serif; font-size:17px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  background:var(--blue); color:#fff; border:1px solid var(--blue); border-radius:8px; padding:9px 18px;
+  transition:transform .12s ease, background .15s ease;
+}
+.btn:hover{background:var(--blue-hi); border-color:var(--blue-hi); transform:translateY(-1px);}
+.btn:focus-visible{outline:2px solid var(--blue-hi); outline-offset:3px;}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line-2);}
+.btn.ghost:hover{background:var(--panel-2); border-color:var(--blue); color:var(--ink);}
+
+/* ---------------- HERO ---------------- */
+.hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line);}
+.hero::before{
+  content:""; position:absolute; inset:-30% 30% 40% -20%;
+  background:radial-gradient(closest-side, var(--blue-glow), transparent 70%);
+  pointer-events:none;
+}
+.hero .in{position:relative; display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center; padding:66px 0 74px;}
+@media (max-width:900px){ .hero .in{grid-template-columns:1fr; gap:38px; padding:44px 0 52px;} }
+h1{
+  font-family:"Archivo",sans-serif; font-weight:800; letter-spacing:-.04em; line-height:.98;
+  font-size:clamp(40px,7vw,74px); margin:0 0 20px; text-wrap:balance;
+}
+h1 .hl{color:var(--blue-hi);}
+.hsub{font-size:19.5px; color:var(--ink-2); max-width:52ch; margin:0 0 28px;}
+.hcta{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:26px;}
+.hstats{display:flex; flex-wrap:wrap; gap:26px; padding-top:22px; border-top:1px solid var(--line);}
+.hstat .v{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:30px; color:var(--ink); line-height:1; font-variant-numeric:tabular-nums;}
+.hstat .k{font-family:"Barlow Condensed",sans-serif; font-size:13.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-top:3px;}
+
+/* ---------------- DEMO ---------------- */
+.demo{
+  background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:15px;
+  box-shadow:0 30px 70px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.02) inset;
+}
+.demo-head{display:flex; align-items:center; justify-content:space-between; padding:6px 8px 13px;}
+.demo-tag{font-family:"Barlow Condensed",sans-serif; font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);}
+.demo-reset{
+  background:none; border:1px solid var(--line-2); color:var(--ink-2); border-radius:6px;
+  font-family:"Barlow Condensed",sans-serif; font-size:14px; letter-spacing:.08em; text-transform:uppercase;
+  padding:4px 11px; cursor:pointer;
+}
+.demo-reset:hover{border-color:var(--blue); color:var(--ink);}
+.demo-reset:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+.screen{background:var(--void); border:1px solid var(--line); border-radius:14px; padding:18px 17px 20px; min-height:392px;}
+
+.credits{display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:15px; border-bottom:1px solid var(--line); margin-bottom:16px;}
+.credits .lab{font-family:"Barlow Condensed",sans-serif; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);}
+.credits .cnum{font-family:"Archivo",sans-serif; font-weight:800; font-size:42px; line-height:.9; color:var(--ink); font-variant-numeric:tabular-nums;}
+.credits .cnum.pulse{animation:pop .45s ease;}
+@keyframes pop{ 0%{transform:scale(1);} 40%{transform:scale(1.22); color:var(--blue-hi);} 100%{transform:scale(1);} }
+.credits .venc{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted); text-align:right;}
+
+.clist{display:flex; flex-direction:column; gap:9px;}
+.cls{
+  display:flex; align-items:center; gap:13px; background:var(--panel-2); border:1px solid var(--line);
+  border-radius:11px; padding:12px 14px;
+}
+.cls .when{flex:1; min-width:0;}
+.cls .d{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:19px; letter-spacing:.03em; text-transform:uppercase; color:var(--ink); line-height:1.1;}
+.cls .h{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--muted); margin-top:2px;}
+.cls .cupo{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2); white-space:nowrap;}
+.cls button{
+  font-family:"Barlow Condensed",sans-serif; font-size:15px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  background:var(--blue); color:#fff; border:none; border-radius:7px; padding:7px 14px; cursor:pointer; white-space:nowrap;
+}
+.cls button:hover{background:var(--blue-hi);}
+.cls button:focus-visible{outline:2px solid var(--blue-hi); outline-offset:2px;}
+.cls button[disabled]{background:var(--panel-3); color:var(--muted); cursor:default;}
+.cls.full{opacity:.5;}
+.cls.done{border-color:var(--green); background:var(--green-lo);}
+.cls .ok{font-family:"Barlow Condensed",sans-serif; font-size:15px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--green); white-space:nowrap;}
+
+.qrbox{margin-top:16px; border:1px solid var(--green); background:var(--green-lo); border-radius:12px; padding:15px; display:flex; gap:15px; align-items:center;}
+.qrbox[hidden]{display:none !important;}
+.qrgrid{width:82px; height:82px; flex:none; background:#fff; padding:5px; border-radius:6px; display:grid; grid-template-columns:repeat(11,1fr); grid-template-rows:repeat(11,1fr); gap:1px;}
+.qrgrid i{background:#0A0D12; border-radius:1px;}
+.qrgrid i.off{background:transparent;}
+.qrtxt .t{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:18px; letter-spacing:.05em; text-transform:uppercase; color:var(--green);}
+.qrtxt .s{font-size:14px; color:var(--ink-2); margin-top:3px;}
+.qrtxt .code{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted); margin-top:6px; word-break:break-all;}
+
+/* ---------------- ANTES / DESPUÉS ---------------- */
+.split{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+@media (max-width:760px){ .split{grid-template-columns:1fr;} }
+.card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 25px;}
+.card.before{border-color:var(--line);}
+.card.after{border-color:var(--blue); box-shadow:0 0 0 1px var(--blue-lo), 0 20px 50px -35px var(--blue-glow);}
+.card h3{font-family:"Archivo",sans-serif; font-size:20px; font-weight:700; margin:0 0 4px; letter-spacing:-.015em;}
+.card .cs{font-family:"Barlow Condensed",sans-serif; font-size:13.5px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:15px;}
+.card.after .cs{color:var(--blue-hi);}
+.card ul{margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:11px;}
+.card li{display:flex; gap:11px; color:var(--ink-2); font-size:16px; line-height:1.5;}
+.card li::before{content:"—"; color:var(--muted); flex:none;}
+.card.after li::before{content:"✓"; color:var(--green); font-weight:700;}
+
+/* ---------------- FEATURES ---------------- */
+.feats{display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:16px;}
+.feat{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 23px; transition:border-color .15s ease, transform .15s ease;}
+.feat:hover{border-color:var(--line-2); transform:translateY(-2px);}
+.feat .fn{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--blue-hi); margin-bottom:11px;}
+.feat h3{font-family:"Archivo",sans-serif; font-size:18px; font-weight:700; margin:0 0 7px; letter-spacing:-.012em;}
+.feat p{margin:0; color:var(--ink-2); font-size:15.5px; line-height:1.52;}
+
+/* ---------------- PASOS ---------------- */
+.flow{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+.fstep{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 23px; position:relative;}
+.fstep .num{
+  font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:52px; line-height:.8;
+  color:var(--panel-3); position:absolute; top:16px; right:20px;
+}
+.fstep h3{font-family:"Archivo",sans-serif; font-size:17px; font-weight:700; margin:0 0 7px; position:relative;}
+.fstep p{margin:0; color:var(--ink-2); font-size:15.5px; position:relative;}
+
+/* ---------------- EQUIPO ---------------- */
+.team{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+.member{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 25px; display:flex; gap:16px; align-items:center;}
+.avatar{
+  width:56px; height:56px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center;
+  background:var(--blue-lo); border:1px solid var(--blue); color:var(--blue-hi);
+  font-family:"Archivo",sans-serif; font-weight:800; font-size:19px; letter-spacing:-.02em;
+}
+.member .mn{font-family:"Archivo",sans-serif; font-size:17.5px; font-weight:700; letter-spacing:-.012em;}
+.member .mr{font-family:"Barlow Condensed",sans-serif; font-size:14.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-top:2px;}
+
+/* ---------------- ACCESOS ---------------- */
+.links{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px;}
+.lk{
+  display:flex; align-items:center; gap:14px; text-decoration:none; background:var(--panel);
+  border:1px solid var(--line); border-radius:12px; padding:17px 19px; transition:border-color .15s ease, background .15s ease;
+}
+.lk:hover{border-color:var(--blue); background:var(--panel-2);}
+.lk:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+.lk .ic{font-size:21px; flex:none; width:26px; text-align:center;}
+.lk .lt{font-family:"Archivo",sans-serif; font-size:16px; font-weight:700; color:var(--ink); letter-spacing:-.01em;}
+.lk .ls{font-size:14px; color:var(--muted); margin-top:1px;}
+.lk .arrow{margin-left:auto; color:var(--muted); font-family:"IBM Plex Mono",monospace;}
+
+/* ---------------- CONTACTO ---------------- */
+.contact{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:34px 36px;}
+@media (max-width:620px){ .contact{padding:24px 19px;} }
+.fgrid{display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;}
+@media (max-width:620px){ .fgrid{grid-template-columns:1fr;} }
+label{display:block; font-family:"Barlow Condensed",sans-serif; font-size:14px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;}
+input,textarea,select{
+  width:100%; background:var(--void); border:1px solid var(--line-2); border-radius:9px; padding:11px 13px;
+  color:var(--ink); font-family:"Barlow",sans-serif; font-size:16px;
+}
+input:focus,textarea:focus,select:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-lo);}
+textarea{resize:vertical; min-height:112px;}
+.fnote{font-size:14px; color:var(--muted); margin:14px 0 0;}
+.fnote a{color:var(--blue-hi);}
+.sent{
+  margin-top:16px; border:1px solid var(--green); background:var(--green-lo); border-radius:11px; padding:15px 17px; color:var(--ink-2); font-size:15.5px;
+}
+.sent[hidden]{display:none !important;}
+.sent b{color:var(--ink);}
+.copybtn{
+  margin-top:11px; font-family:"Barlow Condensed",sans-serif; font-size:15px; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase; background:transparent; color:var(--ink);
+  border:1px solid var(--line-2); border-radius:7px; padding:7px 15px; cursor:pointer;
+}
+.copybtn:hover{border-color:var(--blue); background:var(--panel-2);}
+.copybtn:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+
+/* ---------------- FOOTER ---------------- */
+footer.f{border-top:1px solid var(--line); padding:34px 0 46px; color:var(--muted); font-size:14.5px;}
+footer.f .fin{display:flex; flex-wrap:wrap; gap:14px 30px; align-items:center;}
+footer.f a{color:var(--ink-2); text-decoration:none;}
+footer.f a:hover{color:var(--ink);}
+footer.f .sep{margin-left:auto;}
+
+.reveal{opacity:0; transform:translateY(14px);}
+.reveal.in{opacity:1; transform:none; transition:opacity .55s ease, transform .55s ease;}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1; transform:none; transition:none;}
+  .credits .cnum.pulse{animation:none;}
+  html{scroll-behavior:auto;}
+}
+html{scroll-behavior:smooth;}
+</style>
+
+<nav class="top">
+  <div class="in">
+    <a class="brand" href="#top">
+      <svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#2F7BF0"/></svg>
+      <span class="bn">Training Point</span>
+    </a>
+    <a class="nl" href="#producto">Producto</a>
+    <a class="nl" href="#como">Cómo funciona</a>
+    <a class="nl" href="#equipo">Equipo</a>
+    <a class="nl" href="#accesos">Accesos</a>
+    <a class="btn" href="#contacto">Contacto</a>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<!-- ============== HERO ============== -->
+<header class="hero">
+  <div class="shell in">
+    <div>
+      <p class="klabel">Gestión de clases para entrenamiento funcional</p>
+      <h1>El cuaderno<br>ya no da más.<br><span class="hl">Pasalo al sistema.</span></h1>
+      <p class="hsub">Tus alumnos se anotan solos, pagan sus paquetes y muestran su código al llegar. Vos ves quién viene, quién pagó y quién hace rato que no aparece. Todo desde el celular.</p>
+      <div class="hcta">
+        <a class="btn" href="https://newlogin.alwaysdata.net">Ver el sistema</a>
+        <a class="btn ghost" href="#producto">Cómo funciona</a>
+      </div>
+      <div class="hstats">
+        <div class="hstat"><div class="v">30 s</div><div class="k">Cargar un mes de clases</div></div>
+        <div class="hstat"><div class="v">1</div><div class="k">Código QR por clase</div></div>
+        <div class="hstat"><div class="v">$0</div><div class="k">De comisión por cobro</div></div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-head">
+        <span class="demo-tag">Demo · vista del alumno</span>
+        <button class="demo-reset" type="button" id="reset">Reiniciar</button>
+      </div>
+      <div class="screen">
+        <div class="credits">
+          <div>
+            <div class="lab">Te quedan</div>
+            <div class="cnum" id="cnum">8</div>
+          </div>
+          <div class="venc">vencen el<br>30/09/2026</div>
+        </div>
+        <div class="clist" id="clist"></div>
+        <div class="qrbox" id="qrbox" hidden>
+          <div class="qrgrid" id="qrgrid" aria-hidden="true"></div>
+          <div class="qrtxt">
+            <div class="t">Listo, estás anotado</div>
+            <div class="s">Mostrale este código al profe cuando llegues.</div>
+            <div class="code" id="qrcode"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== ANTES / DESPUÉS ============== -->
+<section id="producto">
+  <div class="shell">
+    <p class="klabel reveal">El problema</p>
+    <h2 class="big reveal">Dami anotaba todo a mano.<br>Y a mano se pierde todo.</h2>
+    <p class="slead reveal">Los turnos, quién pagó, quién vino. Un cuaderno no avisa cuando una clase se llena ni cuando a alguien se le vencieron las clases.</p>
+    <div class="split reveal">
+      <div class="card before">
+        <div class="cs">Antes</div>
+        <h3>Con el cuaderno</h3>
+        <ul>
+          <li>Los alumnos avisaban por mensajes sueltos y había que pasarlos uno por uno.</li>
+          <li>Nadie sabía cuántos lugares quedaban hasta que la gente llegaba.</li>
+          <li>Quién pagó y cuántas clases le quedan: de memoria.</li>
+          <li>La asistencia se tomaba a ojo, sin registro.</li>
+          <li>El apto médico se pedía de palabra y no quedaba archivado.</li>
+          <li>Para avisar un cambio de horario había que escribirle a cada uno.</li>
+        </ul>
+      </div>
+      <div class="card after">
+        <div class="cs">Ahora</div>
+        <h3>Con Training Point</h3>
+        <ul>
+          <li>El alumno se anota solo, desde el celular, sin escribirle a nadie.</li>
+          <li>Cada clase tiene su cupo y el sistema corta cuando se llena.</li>
+          <li>Los créditos se descuentan solos y vencen cuando vos decidas.</li>
+          <li>La asistencia se registra escaneando un QR distinto por clase.</li>
+          <li>El apto médico queda cargado en el perfil y lo abrís cuando quieras.</li>
+          <li>Un aviso llega a todos, a uno solo o a los de una clase puntual.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FUNCIONES ============== -->
+<section>
+  <div class="shell">
+    <p class="klabel reveal">Qué hace</p>
+    <h2 class="big reveal">Todo el gimnasio,<br>en una sola pantalla.</h2>
+    <div class="feats reveal">
+      <div class="feat">
+        <div class="fn">01</div>
+        <h3>Reservas con cupo</h3>
+        <p>El alumno ve las clases de los próximos 30 días con los lugares que quedan y se anota. Si está llena, no puede.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">02</div>
+        <h3>Paquetes de créditos</h3>
+        <p>Packs de 4, 8 o 12 clases. Se descuentan al reservar y se devuelven si el alumno cancela a tiempo.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">03</div>
+        <h3>Asistencia por QR</h3>
+        <p>Cada inscripción genera su propio código. Escaneás y el presente queda contra la clase correcta, sin elegir nada.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">04</div>
+        <h3>Clases recurrentes</h3>
+        <p>Elegís los días, el horario y el rango de fechas, y el sistema carga todas las clases del período de una sola vez.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">05</div>
+        <h3>Perfil del alumno</h3>
+        <p>Sus datos, sus créditos, su apto médico y el historial completo: a qué vino, a qué faltó y qué compró.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">06</div>
+        <h3>Cobro sin comisión</h3>
+        <p>Transferencia al alias o efectivo en el gimnasio. Te llega el aviso, verificás y cargás. Nadie se queda con un porcentaje.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">07</div>
+        <h3>Apto médico archivado</h3>
+        <p>El alumno lo sube una vez, en foto o PDF, y queda guardado. Lo abrís desde su perfil cuando lo necesites.</p>
+      </div>
+      <div class="feat">
+        <div class="fn">08</div>
+        <h3>Avisos que llegan</h3>
+        <p>A todos, a un alumno o a los inscriptos a una clase. Aparecen en la aplicación y también por correo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CÓMO FUNCIONA ============== -->
+<section id="como">
+  <div class="shell">
+    <p class="klabel reveal">Cómo funciona</p>
+    <h2 class="big reveal">Cuatro pasos y ya estás entrenando.</h2>
+    <div class="flow reveal">
+      <div class="fstep"><div class="num">1</div><h3>Se registra</h3><p>Con su correo o directamente con la cuenta de Google. Sin bajar ninguna aplicación.</p></div>
+      <div class="fstep"><div class="num">2</div><h3>Compra su pack</h3><p>Copia el alias, transfiere y avisa desde el sistema. Vos verificás y le cargás los créditos.</p></div>
+      <div class="fstep"><div class="num">3</div><h3>Se anota</h3><p>Elige la clase que quiere de los próximos 30 días. Se le descuenta un crédito solo.</p></div>
+      <div class="fstep"><div class="num">4</div><h3>Muestra el QR</h3><p>Llega, te muestra el código, lo escaneás y queda registrada su asistencia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== EQUIPO ============== -->
+<section id="equipo">
+  <div class="shell">
+    <p class="klabel reveal">Quiénes lo hicimos</p>
+    <h2 class="big reveal">Dos estudiantes,<br>un cliente real.</h2>
+    <p class="slead reveal">Training Point es el proyecto final de 7° año de Informática. No es un ejercicio: es un sistema que se usa todos los días en el gimnasio de Dami.</p>
+    <div class="team reveal">
+      <div class="member">
+        <div class="avatar">JB</div>
+        <div><div class="mn">Juan José Bosio</div><div class="mr">Desarrollo · Base de datos</div></div>
+      </div>
+      <div class="member">
+        <div class="avatar">JG</div>
+        <div><div class="mn">Joaquín Goyechea</div><div class="mr">Desarrollo · Diseño UX/UI</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ACCESOS ============== -->
+<section id="accesos">
+  <div class="shell">
+    <p class="klabel reveal">Accesos</p>
+    <h2 class="big reveal">Todo el proyecto, abierto.</h2>
+    <p class="slead reveal">El sistema funcionando, el código, la documentación técnica y los manuales.</p>
+    <div class="links reveal">
+      <a class="lk" href="https://newlogin.alwaysdata.net">
+        <span class="ic">🏋️</span>
+        <span><span class="lt">El sistema</span><span class="ls">newlogin.alwaysdata.net</span></span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lk" href="https://juanjoybeto.github.io/training-point-documentacion/">
+        <span class="ic">📐</span>
+        <span><span class="lt">Documentación</span><span class="ls">Requisitos, modelo de datos y costos</span></span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lk" href="https://github.com/JuanjoyBeto/training-point">
+        <span class="ic">💻</span>
+        <span><span class="lt">Código en GitHub</span><span class="ls">github.com/JuanjoyBeto/training-point</span></span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lk" href="https://newlogin.alwaysdata.net/manual_alumno.html">
+        <span class="ic">📘</span>
+        <span><span class="lt">Manual del alumno</span><span class="ls">Registrarse, pagar y anotarse</span></span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lk" href="https://newlogin.alwaysdata.net/manual_administrador.html">
+        <span class="ic">📗</span>
+        <span><span class="lt">Manual del administrador</span><span class="ls">Clases, créditos, asistencias y avisos</span></span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="lk" href="https://juanjoybeto.github.io/training-point-documentacion/#s6">
+        <span class="ic">📊</span>
+        <span><span class="lt">Carta Gantt</span><span class="ls">Las 82 tareas del proyecto</span></span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CONTACTO ============== -->
+<section id="contacto">
+  <div class="shell">
+    <p class="klabel reveal">Contacto</p>
+    <h2 class="big reveal">¿Tenés un gimnasio<br>con el mismo problema?</h2>
+    <p class="slead reveal">Contanos cómo manejás tus clases hoy y te decimos si esto te sirve.</p>
+
+    <form class="contact reveal" id="cform" novalidate>
+      <div class="fgrid">
+        <div>
+          <label for="f-nombre">Tu nombre</label>
+          <input type="text" id="f-nombre" name="nombre" required autocomplete="name" placeholder="Nombre y apellido">
+        </div>
+        <div>
+          <label for="f-mail">Tu correo</label>
+          <input type="email" id="f-mail" name="mail" required autocomplete="email" placeholder="nombre@correo.com">
+        </div>
+      </div>
+      <div class="fgrid">
+        <div>
+          <label for="f-lugar">Tu gimnasio o actividad</label>
+          <input type="text" id="f-lugar" name="lugar" placeholder="Nombre del lugar">
+        </div>
+        <div>
+          <label for="f-tema">Sobre qué querés hablar</label>
+          <select id="f-tema" name="tema">
+            <option>Quiero usarlo en mi gimnasio</option>
+            <option>Tengo una duda sobre cómo funciona</option>
+            <option>Soy alumno y necesito ayuda</option>
+            <option>Otra cosa</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label for="f-msg">Tu mensaje</label>
+        <textarea id="f-msg" name="mensaje" placeholder="Contanos cómo manejás las reservas y los pagos hoy."></textarea>
+      </div>
+      <p class="fnote" style="margin-bottom:16px" id="fnote">Al enviar se arma tu mensaje listo para copiar y pasárnoslo por privado.</p>
+      <button class="btn" type="submit">Preparar el mensaje</button>
+      <div class="sent" id="sent" hidden></div>
+    </form>
+  </div>
+</section>
+
+<footer class="f">
+  <div class="shell fin">
+    <span><b style="color:var(--ink-2)">Training Point</b> · Proyecto final 7° Informática A · 2026</span>
+    <span>Juan José Bosio · Joaquín Goyechea</span>
+    <span class="sep"><a href="#top">Volver arriba ↑</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ====== CONFIGURACIÓN ======
+     Poner acá el correo de contacto del equipo, por ejemplo "equipo@correo.com".
+     Mientras esté vacío, el formulario arma el mensaje para copiar y pegar. */
+  var CONTACTO = "";
+
+  /* ---------- demo interactiva ---------- */
+  var CLASES = [
+    { id: 41, dia: "Lunes 14", hora: "18:00 · Funcional", cupo: 3 },
+    { id: 42, dia: "Miércoles 16", hora: "19:30 · Funcional", cupo: 1 },
+    { id: 43, dia: "Viernes 18", hora: "18:00 · Funcional", cupo: 0 }
+  ];
+  var ALUMNO_ID = 27;
+  var creditos = 8;
+  var anotado = null;
+
+  var elNum = document.getElementById('cnum');
+  var elList = document.getElementById('clist');
+  var elQr = document.getElementById('qrbox');
+  var elQrCode = document.getElementById('qrcode');
+  var elGrid = document.getElementById('qrgrid');
+
+  function pintarQR(seed){
+    if (!elGrid) return;
+    elGrid.innerHTML = '';
+    var n = 11, s = seed;
+    for (var i = 0; i < n * n; i++){
+      s = (s * 1103515245 + 12345) & 0x7fffffff;
+      var on = ((s >> 16) & 1) === 1;
+      var r = Math.floor(i / n), c = i % n;
+      var esquina = (r < 3 && c < 3) || (r < 3 && c > n - 4) || (r > n - 4 && c < 3);
+      if (esquina) on = !(r === 1 && (c === 1 || c === n - 2)) && !(r === n - 2 && c === 1);
+      var b = document.createElement('i');
+      if (!on) b.className = 'off';
+      elGrid.appendChild(b);
+    }
+  }
+
+  function render(){
+    if (!elList) return;
+    elNum.textContent = creditos;
+    elList.innerHTML = '';
+    CLASES.forEach(function(c){
+      var row = document.createElement('div');
+      row.className = 'cls' + (c.cupo === 0 && anotado !== c.id ? ' full' : '') + (anotado === c.id ? ' done' : '');
+      var when = document.createElement('div');
+      when.className = 'when';
+      when.innerHTML = '<div class="d">' + c.dia + '</div><div class="h">' + c.hora + '</div>';
+      row.appendChild(when);
+
+      if (anotado === c.id){
+        var ok = document.createElement('span');
+        ok.className = 'ok';
+        ok.textContent = '✓ Anotado';
+        row.appendChild(ok);
+      } else if (c.cupo === 0){
+        var full = document.createElement('span');
+        full.className = 'cupo';
+        full.textContent = 'Completa';
+        row.appendChild(full);
+      } else {
+        var cupo = document.createElement('span');
+        cupo.className = 'cupo';
+        cupo.textContent = c.cupo + ' lugar' + (c.cupo === 1 ? '' : 'es');
+        row.appendChild(cupo);
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = 'Anotarme';
+        b.disabled = anotado !== null || creditos === 0;
+        b.addEventListener('click', function(){ anotar(c); });
+        row.appendChild(b);
+      }
+      elList.appendChild(row);
+    });
+  }
+
+  function anotar(c){
+    if (anotado !== null || creditos === 0) return;
+    anotado = c.id;
+    creditos--;
+    c.cupo = Math.max(0, c.cupo - 1);
+    elNum.classList.remove('pulse');
+    void elNum.offsetWidth;
+    elNum.classList.add('pulse');
+    render();
+    elQrCode.textContent = ALUMNO_ID + ':' + c.id + ':' + 'a7f3c1e9d4b2';
+    pintarQR(ALUMNO_ID * 1000 + c.id);
+    elQr.hidden = false;
+  }
+
+  var reset = document.getElementById('reset');
+  if (reset) reset.addEventListener('click', function(){
+    creditos = 8; anotado = null;
+    CLASES[0].cupo = 3; CLASES[1].cupo = 1; CLASES[2].cupo = 0;
+    elQr.hidden = true;
+    render();
+  });
+  render();
+
+  /* ---------- formulario de contacto ---------- */
+  var form = document.getElementById('cform');
+  var sent = document.getElementById('sent');
+  var fnote = document.getElementById('fnote');
+  if (fnote && CONTACTO){
+    fnote.textContent = 'Al enviar se abre tu programa de correo con el mensaje ya escrito, listo para mandar.';
+  }
+  if (form) form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var nombre = (document.getElementById('f-nombre').value || '').trim();
+    var mail   = (document.getElementById('f-mail').value || '').trim();
+    var lugar  = (document.getElementById('f-lugar').value || '').trim();
+    var tema   = document.getElementById('f-tema').value;
+    var msg    = (document.getElementById('f-msg').value || '').trim();
+
+    if (!nombre || !mail){
+      sent.hidden = false;
+      sent.innerHTML = '<b>Falta un dato.</b> Necesitamos tu nombre y tu correo para poder responderte.';
+      return;
+    }
+
+    var cuerpo =
+      'Nombre: ' + nombre + '\n' +
+      'Correo: ' + mail + '\n' +
+      'Gimnasio o actividad: ' + (lugar || '-') + '\n' +
+      'Tema: ' + tema + '\n\n' +
+      (msg || '(sin mensaje)');
+
+    sent.hidden = false;
+
+    if (!CONTACTO){
+      sent.innerHTML = '<b>Listo, ' + nombre.split(' ')[0] + '.</b> Copiá este mensaje y mandánoslo por privado:';
+      var pre = document.createElement('pre');
+      pre.style.cssText = 'white-space:pre-wrap;font-family:IBM Plex Mono,monospace;font-size:13px;' +
+        'background:var(--void);border:1px solid var(--line-2);border-radius:8px;padding:12px 14px;' +
+        'margin:10px 0 0;color:var(--ink-2);overflow-x:auto;';
+      pre.textContent = cuerpo;
+      sent.appendChild(pre);
+      var cb = document.createElement('button');
+      cb.type = 'button';
+      cb.className = 'copybtn';
+      cb.textContent = 'Copiar mensaje';
+      cb.addEventListener('click', function(){
+        var ok = false;
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = cuerpo;
+          ta.setAttribute('readonly','');
+          ta.style.cssText = 'position:absolute;left:-9999px;';
+          document.body.appendChild(ta);
+          ta.select();
+          ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch (err) { ok = false; }
+        cb.textContent = ok ? '✓ Copiado' : 'Seleccionalo y copialo a mano';
+        setTimeout(function(){ cb.textContent = 'Copiar mensaje'; }, 2600);
+      });
+      sent.appendChild(cb);
+      return;
+    }
+
+    sent.innerHTML = '<b>Listo, ' + nombre.split(' ')[0] + '.</b> Se abre tu correo con el mensaje escrito. ' +
+      'Si no se abre solo, escribinos a <a href="mailto:' + CONTACTO + '">' + CONTACTO + '</a> y pegá lo que completaste.';
+
+    var href = 'mailto:' + CONTACTO +
+      '?subject=' + encodeURIComponent('Consulta desde la web de Training Point') +
+      '&body=' + encodeURIComponent(cuerpo);
+    try { window.location.href = href; } catch (err) { /* el visor puede bloquearlo */ }
+  });
+
+  /* ---------- reveal al hacer scroll ---------- */
+  var revs = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if (!('IntersectionObserver' in window)){
+    revs.forEach(function(r){ r.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  revs.forEach(function(r){ io.observe(r); });
+})();
+</script>
+
+</body></html>
